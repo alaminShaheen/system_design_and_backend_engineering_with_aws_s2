@@ -38,7 +38,7 @@ def maxProfit(self, prices: List[int]) -> int:
 
 	# return recursive_memoized(0, 0, 2, dp)
 
-	# iterative bottom up TC -> O(2 * (k + 1) * (n + 1)) ≈ O(n), SC -> O(2 * (k + 1) * (n + 1)) ≈ O(n), where n = len(prices), k = max_transactions = 2
+	# iterative space optimized bottom up TC -> O(2 * (k + 1) * (n + 1)) ≈ O(n), SC -> O(2 * (k + 1) * (n + 1)) ≈ O(n), where n = len(prices), k = max_transactions = 2
 	def iterative() -> int:
 		for index in range(len(prices), -1, -1):
 			for bought in range(2):

@@ -58,7 +58,7 @@ def maxProfit(self, k: int, prices: List[int]) -> int:
 
 	# return iterative()
 
-	# iterative bottom up TC -> O(2 * (k + 1) * (n + 1)) ≈ O(n), SC -> O(2 * (k + 1)) ≈ O(k), where n = len(prices), k = max_transactions
+	# iterative space optimized bottom up TC -> O(2 * (k + 1) * (n + 1)) ≈ O(n), SC -> O(2 * (k + 1)) ≈ O(k), where n = len(prices), k = max_transactions
 	def iterative_optimized() -> int:
 		dp = [[-1] * (max_transactions + 1) for _ in range(2)]
 		temp = [[-1] * (max_transactions + 1) for _ in range(2)]
