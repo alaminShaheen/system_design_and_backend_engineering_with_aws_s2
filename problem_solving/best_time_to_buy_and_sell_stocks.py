@@ -4,18 +4,27 @@ from typing import List
 def maxProfit(self, prices: List[int]) -> int:
 	dp = [[-1] * 2 for _ in range(len(prices) + 1)]
 
-	# # recursive top down TC -> O(2 ^ n), SC -> O(n)
+	# recursive top down TC -> O(2 ^ n), SC -> O(n)
 	def recursive(index: int, bought: bool) -> int:
+		# base case
+		# I've exhausted looking at the array
 		if index == len(prices):
 			return 0
-
+		# if I've already bought a stock before then need to sell
 		if bought:
+			# either sell at current price and be done (since I can only do 1 transaction)
 			sell = prices[index]
+			# or skip selling at current price for a better selling price ahead
 			skip_sell = recursive(index + 1, bought)
+			# max of whatever I do
 			return max(sell, skip_sell)
+		# if I've not bought any stocks before need to buy
 		else:
+			# either buy at current price
 			buy = -prices[index] + recursive(index + 1, True)
+			# or skip buying at current price for a better buying price ahead
 			skip_buy = recursive(index + 1, bought)
+			# max of whatever I do
 			return max(buy, skip_buy)
 
 	# return max(0, recursive(0, False))
@@ -58,6 +67,7 @@ def maxProfit(self, prices: List[int]) -> int:
 
 	# iterative space optimized top down TC -> O(2 * (n + 1)) ≈ O(n), SC -> O(2 + 2) ≈ O(1)
 	def optimized_iterative():
+		# states depend on only whether I've bought or not. Don't need the index state.
 		dp = [-1] * 2
 		temp = [-1] * 2
 		for index in range(len(prices), -1, -1):

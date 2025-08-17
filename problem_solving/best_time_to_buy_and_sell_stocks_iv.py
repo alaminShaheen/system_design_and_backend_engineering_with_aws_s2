@@ -7,21 +7,32 @@ def maxProfit(self, k: int, prices: List[int]) -> int:
 
 	# recursive top down TC -> O(2^n), SC -> O(n), n = len(prices)
 	def recursive(index: int, bought: bool, transactions: int) -> int:
+		# base case
+		# all k transactions have been completed, or I've exhausted looking at the array
 		if transactions == 0 or index == len(prices):
 			return 0
 
+		# if I've already bought a stock before then need to sell
 		if bought:
+			# either sell at current price
 			sell = prices[index] + recursive(index + 1, False, transactions - 1)
+			# or skip selling at current price for a better selling price ahead
 			skip_sell = recursive(index + 1, bought, transactions)
+			# max of whatever I do
 			return max(sell, skip_sell)
+		# if I've not bought any stocks before then need to buy
 		else:
+			# either buy at current price
 			buy = -prices[index] + recursive(index + 1, True, transactions)
+			# or skip buying at current price for a better buying price ahead
 			skip_buy = recursive(index + 1, bought, transactions)
+			# max of whatever I do
 			return max(buy, skip_buy)
 
 	# return recursive(0, False, k)
 
 	# recursive memoized top down TC -> O(2 * (k + 1) * (n + 1)) ≈ O(n * k), SC -> O(2 * (k + 1) * (n + 1) + n (auxiliary)) ≈ O(n * k), where n = len(prices), k = max_transactions
+	# copy and paste recursive solution and do minor tweaks to introduce dp
 	def recursive_memoized(index: int, bought: int, transactions: int, dp: List[List[List[int]]]) -> int:
 		if transactions == 0 or index == len(prices):
 			return 0
@@ -39,6 +50,7 @@ def maxProfit(self, k: int, prices: List[int]) -> int:
 	# return recursive_memoized(0, 0, 2, dp)
 
 	# iterative bottom up TC -> O(2 * (k + 1) * (n + 1)) ≈ O(n * k), SC -> O(2 * (k + 1) * (n + 1)) ≈ O(n * k), where n = len(prices), k = max_transactions
+	# copy and paste recursive memoized solution and do minor tweaks
 	def iterative() -> int:
 		for index in range(len(prices), -1, -1):
 			for bought in range(2):
@@ -60,6 +72,7 @@ def maxProfit(self, k: int, prices: List[int]) -> int:
 
 	# iterative space optimized bottom up TC -> O(2 * (k + 1) * (n + 1)) ≈ O(n), SC -> O(2 * (k + 1)) ≈ O(k), where n = len(prices), k = max_transactions
 	def iterative_optimized() -> int:
+		# states depend on only the transactions and whether I've bought or not. Don't need the index state.
 		dp = [[-1] * (max_transactions + 1) for _ in range(2)]
 		temp = [[-1] * (max_transactions + 1) for _ in range(2)]
 		for index in range(len(prices), -1, -1):
